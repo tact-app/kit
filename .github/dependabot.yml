@@ -1,7 +1,15 @@
 version: 2
 
+registries:
+  fortawesome:
+    type: npm-registry
+    url: https://npm.fontawesome.com
+    token: ${{ secrets.FONTAWESOME_TOKEN }}
+
 updates:
   - package-ecosystem: npm
+    registries:
+      - fortawesome
     directory: /
     schedule:
       interval: daily
