@@ -1,0 +1,225 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+[ "${BASH_VERSINFO:-0}" -ge 4 ] || {
+  echo "bash version 4 or higher is required" >&2
+  exit 1
+}
+
+declare -A config
+config['dryrun']=false
+config['port']=6006
+
+setup() {
+  set_fontawesome_token false || (echo The token is required && return 1)
+  set_vercel_token false || true
+  @env
+
+  build --from-scratch
+}
+
+set_fontawesome_token() { @store_token 'Font Awesome' fontawesome.token 36 "${1:-true}"; }
+set_vercel_token() { @store_token Vercel vercel.token 24 "${1:-true}"; }
+@store_token() {
+  local name="${1}" key="${2}" length="${3}" update="${4:-true}"
+
+  if ! ${update}; then
+    local yn='N'
+    read -rp "Do you have ${name}' token? (y/N) " yn
+    case $yn in
+    [yY]) ;;
+    *) return 1 ;;
+    esac
+  fi
+
+  local token
+  echo Please enter "${name}" token:
+  read -rs token
+  token=${token## }
+  token=${token%% }
+
+  if [ "${#token}" -lt "${length}" ]; then
+    echo 'Token is invalid.'
+    exit 1
+  fi
+  git config "${key}" "${token}"
+  echo 'Token saved.'
+
+  [ "${update}" != false ] && @env || return 0
+}
+
+@env() {
+  cat <<EOF >.env
+FONTAWESOME_TOKEN=$(git config fontawesome.token)
+VERCEL_TOKEN=$(git config vercel.token)
+EOF
+}
+
+@vne() {
+  source .env
+  git config fontawesome.token ${FONTAWESOME_TOKEN}
+  git config vercel.token ${VERCEL_TOKEN}
+}
+
+refresh() {
+  for remote in $(git remote | grep -v origin); do
+    git fetch --prune --tags "${remote}"
+  done
+  git fetch --prune --tags --prune-tags origin
+
+  local remote actual target shared
+  remote=${1:-'@{u}'}
+  actual=$(git rev-parse @)
+  target=$(git rev-parse "${remote}")
+  shared="$(git merge-base @ "${remote}")"
+  if [ "${actual}" != "${target}" ]; then
+    if ! git diff-index --quiet HEAD; then
+      git stash -m 'stash before pull'
+      trap 'git stash pop' EXIT
+    fi
+    git pull --force --rebase
+  fi
+
+  if ! @deps verify package-lock.json; then
+    install --from-scratch
+    md5sum package-lock.json >node_modules/package.lock
+  fi
+}
+
+@deps() {
+  case "${1}" in
+  check) depcheck --ignores=pre-commit,prettier,@fortawesome/fontawesome-pro,@types/node ;;
+  verify)
+    local file="${2:-package-lock.json}" lock
+    lock=$(dirname "${file}")/node_modules/package.lock
+    if [ ! -f "${lock}" ]; then
+      return 1
+    fi
+    [ "$(cat "${lock}")" == "$(md5sum "${file}")" ]
+    ;;
+  esac
+}
+
+# Example: run install --from-scratch
+install() {
+  [ "${1:-}" == '--from-scratch' ] && rm -rf node_modules
+  local cmd='npm install'
+  if [ -t package-lock.json ]; then
+    cmd='npm ci'
+  fi
+  @node "${cmd} --ignore-scripts --include=dev"
+}
+
+# Example: run build --from-scratch
+# Example: run build docker --from-scratch
+build() {
+  # docker way
+  if [ "${1:-}" == 'docker' ]; then
+    if [ "${2:-}" == '--from-scratch' ]; then
+      docker rmi tact-app/web:local || true
+    fi
+    docker build \
+      --build-arg token="$(git config fontawesome.token)" \
+      -f Dockerfile \
+      -t tact-app/web:local .
+    return
+  fi
+
+  # local way
+  [ "${1:-}" == '--from-scratch' ] && rm -rf .next && install "${@}"
+  @node 'npm run build'
+}
+
+# Example: run start --from-scratch
+# Example: run start docker --from-scratch
+start() {
+  # docker way
+  if [ "${1:-}" == 'docker' ]; then
+    [ "${2:-}" == '--from-scratch' ] && build docker "${@:2}"
+    docker run \
+      --rm -it \
+      -p 127.0.0.1:"${config['port']}":3000 \
+      tact-app/web:local
+    return
+  fi
+
+  # local way
+  [ "${1:-}" == '--from-scratch' ] && build "${@}"
+  @node 'npm run start' -p 127.0.0.1:"${config['port']}":3000
+}
+
+npm() { @node "npm ${*}"; }
+
+@node() {
+  docker run --rm -it \
+    --env-file .env \
+    -v "$(pwd)":/app \
+    -w /app \
+    "${@:2}" \
+    --entrypoint=/bin/sh \
+    node:16-alpine -c "${1}"
+}
+
+@debug() { echo "${@}"; }
+@trace() { @debug "${@}" && "${@}"; }
+@error() { echo "${@}" >&2; }
+@fatal() { @error "${@}" && exit 1; }
+@usage() {
+  cat - <<EOF
+Usage: $0 <task> <args>
+Tasks:
+EOF
+  compgen -A function | grep -Ev '^(@|_|-|\+)' | sort | cat -n
+}
+
+@() {
+  ${config['dryrun']} && echo "${@}"
+  "${@}"
+}
+
+_() {
+  if ${config['dryrun']}; then
+    echo "${@}"
+    return
+  fi
+  trap 'echo "${@}"' ERR
+  "${@}"
+}
+
+-() {
+  if ${config['dryrun']}; then
+    echo "${*} || false"
+    return
+  fi
+  trap 'echo "${*} || false"' ERR
+  "${@}" || false
+}
+
++() {
+  if ${config['dryrun']}; then
+    echo "${*} || true"
+    return
+  fi
+  trap 'echo "${*} || true"' ERR
+  "${@}" || true
+}
+
+function @main() {
+  for arg in "${@}"; do
+    case "${arg}" in
+    -d | --dry-run)
+      config['dryrun']=true
+      shift
+      ;;
+    -p | --port)
+      config['port']="${2}"
+      shift 2
+      ;;
+    *) break ;;
+    esac
+  done
+  "${@:-@usage}"
+}
+
+@main "${@}"
