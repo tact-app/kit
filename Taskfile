@@ -151,6 +151,20 @@ start() {
 
 npm() { @node "npm ${*}"; }
 
+storybook() {
+  if [ "${1:-}" == 'build' ]; then
+    @node 'npm run build-storybook'
+    return
+  fi
+
+  if [ "${1:-}" == 'serve' ]; then
+    @node 'npm run serve-storybook' -p 127.0.0.1:"${config['port']}":3000
+    return
+  fi
+
+  @node 'npm run storybook' -p 127.0.0.1:"${config['port']}":6006
+}
+
 @node() {
   docker run --rm -it \
     --env-file .env \

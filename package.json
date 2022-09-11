@@ -12,9 +12,10 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --dir . -- --fix",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "storybook": "storybook dev -p 6006 -s public",
+    "build-storybook": "storybook build -s public",
+    "serve-storybook": "serve storybook-static"
   },
   "pre-commit": [
     "lint",
@@ -42,6 +43,7 @@
     "@storybook/nextjs": "^7.0.6",
     "@storybook/react": "^7.0.6",
     "@storybook/testing-library": "^0.1.0",
+    "serve": "^14.2.0",
     "storybook": "^7.0.6"
   }
 }
