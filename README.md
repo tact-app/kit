@@ -8,8 +8,8 @@ Requirements:
 
 - [Docker Desktop][Docker].
 - Access tokens for
-    - [Font Awesome][]
-    - [Vercel][] (optional)
+  - [Font Awesome][]
+  - [Vercel][] (optional)
 
 [Docker]:         https://www.docker.com/products/docker-desktop/
 [Font Awesome]:   https://fontawesome.com/
