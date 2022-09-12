@@ -1,4 +1,4 @@
-# 🖥️ Tact.kit
+# 🎁 Tact.kit
 
 Tact UI kit.
 

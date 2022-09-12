@@ -7,9 +7,23 @@ set -euo pipefail
   exit 1
 }
 
+paths=(
+  "$(pwd)/node_modules/.bin"
+)
+for path in "${paths[@]}"; do
+  if [[ ":${PATH}:" != *":${path}:"* ]]; then
+    export PATH="${path}:${PATH}"
+  fi
+done
+
 declare -A config
 config['dryrun']=false
 config['port']=6006
+
+for src in bin/lib/**/*.bash; do
+  # shellcheck source=bin/lib/tools/vercel.bash
+  source "${src}"
+done
 
 setup() {
   set_fontawesome_token false || (echo The token is required && return 1)
