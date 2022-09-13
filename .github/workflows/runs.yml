@@ -12,6 +12,7 @@ on:
           - Dependabot at weekends
           - Documentation delivery
           - Issue invalidation
+          - UI kit delivery
           - Workflow invalidation
         default: Workflow invalidation
         required: true
