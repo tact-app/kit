@@ -49,6 +49,7 @@ jobs:
       - name: Install dependencies if needed
         run: npm ci
         if: steps.deps.outputs.cache-hit != 'true'
+        env: { FONTAWESOME_TOKEN: '${{ secrets.FONTAWESOME_TOKEN }}' }
 
       - name: Build static HTML with Storybook
         run: ./Taskfile storybook build
