@@ -31,7 +31,7 @@
     "@storybook/blocks": "^7.0.6",
     "@storybook/nextjs": "^7.0.6",
     "@storybook/react": "^7.0.6",
-    "@storybook/testing-library": "^0.0.14-next.2",
+    "@storybook/testing-library": "^0.1.0",
     "storybook": "^7.0.6"
   }
 }
