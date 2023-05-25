@@ -42,7 +42,7 @@
     "@storybook/addon-links": "^7.0.15",
     "@storybook/blocks": "^7.0.13",
     "@storybook/nextjs": "^7.0.15",
-    "@storybook/react": "^7.0.13",
+    "@storybook/react": "^7.0.17",
     "@storybook/testing-library": "^0.1.0",
     "serve": "^14.2.0",
     "storybook": "^7.0.17",
