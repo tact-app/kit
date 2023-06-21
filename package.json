@@ -43,7 +43,7 @@
     "@storybook/blocks": "^7.0.21",
     "@storybook/nextjs": "^7.0.22",
     "@storybook/react": "^7.0.21",
-    "@storybook/testing-library": "^0.1.0",
+    "@storybook/testing-library": "^0.2.0",
     "serve": "^14.2.0",
     "storybook": "^7.0.22",
     "vercel": "^30.2.2"
