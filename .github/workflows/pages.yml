@@ -54,7 +54,7 @@ jobs:
       - name: Build static HTML with Storybook
         run: npm run build-storybook
       - name: Upload the documentation
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with: { path: storybook-static }
 
   deploy:
