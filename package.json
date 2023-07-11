@@ -46,6 +46,6 @@
     "@storybook/testing-library": "^0.2.0",
     "serve": "^14.2.0",
     "storybook": "^7.0.26",
-    "vercel": "^31.0.1"
+    "vercel": "^31.0.2"
   }
 }
