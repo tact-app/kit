@@ -12,7 +12,7 @@ updates:
       - fortawesome
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
       time: '05:00'
       timezone: UTC
     labels:
@@ -28,7 +28,7 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
       time: '05:00'
       timezone: UTC
     labels:

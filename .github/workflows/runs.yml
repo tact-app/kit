@@ -9,6 +9,8 @@ on:
         options:
           - All
           - Cache invalidation
+          - Cache warmup
+          - Clean environment
           - Dependabot at weekends
           - Issue invalidation
           - UI kit delivery
@@ -20,13 +22,13 @@ on:
         type: boolean
         required: false
       reason:
+        description: The reason for dispatching it manually.
         type: string
         default: manual healthcheck
         required: true
 
   schedule:
-    - name: At 07:00 on Sunday, UTC
-      cron: 0 7 * * 0
+    - cron: 0 7 1 * * # at 07:00 on day-of-month 1, UTC
 
 jobs:
   delete:
@@ -54,17 +56,11 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with: { fetch-depth: 0 }
-      - name: Define notification message
-        id: message
-        uses: ./.github/actions/notify
 
-      - name: Send Slack notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_COLOR: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
-          SLACK_FOOTER: made with ❤️ for everyone by OctoLab
-          SLACK_ICON: https://github.com/github.png?size=64
-          SLACK_MESSAGE: ${{ steps.message.outputs.txt }}
-          SLACK_TITLE: '🗑️ ${{ github.repository }}: ${{ github.workflow }}'
-          SLACK_USERNAME: GitHub Actions
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Send notification
+        uses: ./.github/actions/notify
+        continue-on-error: true
+        with:
+          emoji: 🧹
+          channel: ${{ secrets.SLACK_WEBHOOK }}
+          success: ${{ ! contains(needs.*.result, 'failure') }}

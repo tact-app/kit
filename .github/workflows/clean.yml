@@ -1,4 +1,4 @@
-name: Cache invalidation
+name: Clean environment
 
 on:
   workflow_dispatch:
@@ -10,35 +10,41 @@ on:
         required: true
 
   schedule:
-    - cron: 0 6 1 * * # at 06:00 on day-of-month 1, UTC
+    - cron: 30 6 * * 0 # at 06:30 on Sunday, UTC
 
 jobs:
-  delete:
-    name: Deleting
+  vercel:
+    name: Clean up Vercel
     runs-on: ubuntu-latest
+
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with: { fetch-depth: 0 }
-      - name: Install the GitHub CLI cache extension
-        run: gh extension install actions/gh-actions-cache
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: tools/package-lock.json
+          check-latest: true
+      - name: Install tools
+        run: ./Taskfile tools npm ci
 
-      - name: Cleanup caches
+      - name: Remove deployments without an active alias
         run: |
-          echo Deleting caches...
-          for key in $(gh actions-cache list -L 100 -R '${{ github.repository }}' | cut -f 1); do
-            gh actions-cache delete "${key}" -R '${{ github.repository }}' --confirm || true
-          done
-          echo Done
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          shopt -s expand_aliases
+          alias run=./Taskfile
+          run @token set vercel ${{ secrets.VERCEL_TOKEN }}
+          run vercel clean
 
   notify:
     name: Notifying
-    needs: [ delete ]
+    needs: [ vercel ]
     runs-on: ubuntu-latest
     if: failure() || success()
 
