@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       reason:
+        description: The reason for dispatching it manually.
         type: string
         default: manual healthcheck
         required: true
@@ -11,19 +12,22 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '.github/workflows/pages.yml'
-      - 'pages/**/*'
+      - '.github/workflows/cd.kit.yml'
       - 'public/**/*'
       - 'stories/**/*'
       - '.npmrc'
-      - '*.css'
-      - '*.jsx?'
+      - '**.css'
+      - '**.jsx?'
+      - '**.tsx?'
       - '*.json'
-    tags: [ '!*' ]
+      - '!tools/**/*'
+
+  schedule:
+    - cron: 0 7 1 * * # at 07:00 on day-of-month 1, UTC
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -36,23 +40,19 @@ jobs:
         with: { fetch-depth: 0 }
       - name: Set up Node.js environment
         uses: actions/setup-node@v3
-        with: { node-version: 16 }
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: package-lock.json
+          check-latest: true
+      - name: Install dependencies
+        run: npm ci
+        env: { FONTAWESOME_TOKEN: '${{ secrets.FONTAWESOME_TOKEN }}' }
       - name: Set up GitHub Pages
         uses: actions/configure-pages@v3
 
-      - name: Cache dependencies
-        id: deps
-        uses: actions/cache@v3
-        with:
-          path: ./node_modules
-          key: deps-${{ hashFiles('package-lock.json') }}
-      - name: Install dependencies if needed
-        run: npm ci
-        if: steps.deps.outputs.cache-hit != 'true'
-        env: { FONTAWESOME_TOKEN: '${{ secrets.FONTAWESOME_TOKEN }}' }
-
       - name: Build static HTML with Storybook
-        run: npm run build-storybook
+        run: npm run storybook-build
       - name: Upload the documentation
         uses: actions/upload-pages-artifact@v2
         with: { path: storybook-static }
@@ -76,7 +76,7 @@ jobs:
 
   notify:
     name: Notifying
-    needs: [ build, deploy ]
+    needs: [ deploy ]
     runs-on: ubuntu-latest
     if: failure() || success()
 
@@ -84,18 +84,11 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with: { fetch-depth: 0 }
-      - name: Define notification message
-        id: message
-        uses: ./.github/actions/notify
 
-      - name: Send Slack notification
-        uses: rtCamp/action-slack-notify@v2
+      - name: Send notification
+        uses: ./.github/actions/notify
         continue-on-error: true
-        env:
-          SLACK_COLOR: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
-          SLACK_FOOTER: made with ❤️ for everyone by OctoLab
-          SLACK_ICON: https://github.com/github.png?size=64
-          SLACK_MESSAGE: ${{ steps.message.outputs.txt }}
-          SLACK_TITLE: '📚 ${{ github.repository }}: ${{ github.workflow }}'
-          SLACK_USERNAME: GitHub Actions
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        with:
+          emoji: 🎁
+          channel: ${{ secrets.SLACK_WEBHOOK }}
+          success: ${{ ! contains(needs.*.result, 'failure') }}

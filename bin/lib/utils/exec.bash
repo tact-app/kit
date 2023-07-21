@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck source=../core/runtime.bash # $config (bottom-up)
 
 @() {
   ${config['dryrun']} && echo "${@}"
@@ -10,6 +11,7 @@ _() {
     echo "${@}"
     return
   fi
+
   trap 'echo "${@}"' ERR
   "${@}"
 }
@@ -19,6 +21,7 @@ _() {
     echo "${*} || false"
     return
   fi
+
   trap 'echo "${*} || false"' ERR
   "${@}" || false
 }
@@ -28,6 +31,7 @@ _() {
     echo "${*} || true"
     return
   fi
+
   trap 'echo "${*} || true"' ERR
   "${@}" || true
 }

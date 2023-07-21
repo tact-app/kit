@@ -3,8 +3,8 @@
   "license": "AGPL-3.0-later",
   "private": true,
   "engines": {
-    "npm": "^8.0.0",
-    "node": "^16.14.0"
+    "npm": "^9.0.0",
+    "node": "^18.0.0"
   },
   "scripts": {
     "dev": "NODE_OPTIONS=--inspect next dev",
@@ -13,9 +13,9 @@
     "lint": "next lint",
     "lint:fix": "next lint --dir . -- --fix",
     "type-check": "tsc",
-    "storybook": "storybook dev -p 6006 -s public",
-    "build-storybook": "storybook build -s public",
-    "serve-storybook": "serve storybook-static"
+    "storybook-dev": "storybook dev -p 6006 -s public",
+    "storybook-build": "storybook build -s public",
+    "storybook-serve": "serve storybook-static"
   },
   "pre-commit": [
     "lint",
@@ -23,29 +23,32 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^6.4.0",
+    "@storybook/addon-essentials": "^7.1.0",
+    "@storybook/addon-interactions": "^7.1.0",
+    "@storybook/addon-links": "^7.1.0",
+    "@storybook/blocks": "^7.1.0",
+    "@storybook/nextjs": "^7.1.0",
+    "@storybook/react": "^7.1.0",
+    "next": "^13.4.10",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.1.0",
+    "tailwindcss": "^3.3.3"
+  },
+  "devDependencies": {
+    "@storybook/testing-library": "^0.2.0",
     "@types/node": "^20.4.2",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.45.0",
-    "eslint-config-next": "^13.4.10",
-    "next": "^13.4.10",
-    "postcss": "^8.4.26",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tailwindcss": "^3.3.3",
-    "typescript": "^5.1.6"
-  },
-  "devDependencies": {
-    "@storybook/addon-essentials": "^7.0.27",
-    "@storybook/addon-interactions": "^7.0.27",
-    "@storybook/addon-links": "^7.0.27",
-    "@storybook/blocks": "^7.0.26",
-    "@storybook/nextjs": "^7.1.0",
-    "@storybook/react": "^7.0.21",
-    "@storybook/testing-library": "^0.2.0",
+    "eslint-config-next": "^13.4.11",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-unused-imports": "^3.0.0",
+    "postcss": "^8.4.27",
+    "pre-commit": "^1.2.2",
+    "prettier": "^3.0.0",
     "serve": "^14.2.0",
-    "storybook": "^7.0.27",
-    "vercel": "^31.0.4"
+    "typescript": "^5.1.6"
   }
 }

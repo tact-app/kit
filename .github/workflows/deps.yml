@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       reason:
+        description: The reason for dispatching it manually.
         type: string
         default: manual healthcheck
         required: true
 
   schedule:
-    - name: At 06:00 on Saturday and Sunday, UTC
-      cron: 0 6 * * 6,0
+    - cron: 0 6 * * 6,0 # at 06:00 on Saturday and Sunday, UTC
 
 jobs:
   check:
@@ -22,15 +22,15 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with: { fetch-depth: 0 }
-
       - name: Install dependabot
         run: gh gist view --raw e09e1ecd76d5573e0517a7622009f06f | bash
         env:
           GITHUB_TOKEN: ${{ secrets.DEPENDABOT_TOKEN }}
+
       - name: Emulate dependabot's update process
         run: |
           envsubst <.github/integrations/dependabot/job.yml >/tmp/job.yml
-          dependabot update -f /tmp/job.yml --dry-run
+          dependabot update -f /tmp/job.yml
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
           LOCAL_GITHUB_ACCESS_TOKEN: ${{ secrets.DEPENDABOT_TOKEN }}
@@ -45,17 +45,10 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
         with: { fetch-depth: 0 }
-      - name: Define notification message
-        id: message
-        uses: ./.github/actions/notify
 
-      - name: Send Slack notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_COLOR: ${{ contains(needs.*.result, 'failure') && 'failure' || 'success' }}
-          SLACK_FOOTER: made with ❤️ for everyone by OctoLab
-          SLACK_ICON: https://github.com/github.png?size=64
-          SLACK_MESSAGE: ${{ steps.message.outputs.txt }}
-          SLACK_TITLE: '🤖 ${{ github.repository }}: ${{ github.workflow }}'
-          SLACK_USERNAME: GitHub Actions
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Send notification
+        uses: ./.github/actions/notify
+        continue-on-error: true
+        with:
+          channel: ${{ secrets.SLACK_WEBHOOK }}
+          success: ${{ ! contains(needs.*.result, 'failure') }}
