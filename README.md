@@ -8,17 +8,24 @@ Requirements:
 
 - [Docker Desktop][Docker].
 - Access tokens for
+  - [Chromatic][] (optional)
   - [Font Awesome][]
+  - [GitHub][] (optional)
+  - [Graphite][] (optional)
+  - [Sentry][] (optional)
   - [Vercel][] (optional)
 
+[Chromatic]:      https://www.chromatic.com/
 [Docker]:         https://www.docker.com/products/docker-desktop/
 [Font Awesome]:   https://fontawesome.com/
+[GitHub]:         https://cli.github.com/
+[Graphite]:       https://graphite.dev/
+[Sentry]:         https://sentry.io/welcome/
 [Vercel]:         https://vercel.com/
 
 ```bash
-$ alias run='./Taskfile'
-$ alias activate='source bin/activate'
-$ activate && run setup
+$ alias run=./Taskfile
+$ run setup
 ```
 
 ## Manage secrets
@@ -26,7 +33,11 @@ $ activate && run setup
 You can update tokens by the following commands
 
 ```bash
+$ run set_chromatic_token
 $ run set_fontawesome_token
+$ run set_github_token
+$ run set_graphite_token
+$ run set_sentry_token
 $ run set_vercel_token
 ```
 

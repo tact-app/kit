@@ -7,15 +7,13 @@
     "node": "^18.0.0"
   },
   "scripts": {
-    "dev": "NODE_OPTIONS=--inspect next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "storybook dev -p 6006 -s public",
+    "build": "storybook build -s public",
+    "serve": "serve storybook-static",
     "lint": "next lint",
     "lint:fix": "next lint --dir . -- --fix",
     "type-check": "tsc",
-    "storybook-dev": "storybook dev -p 6006 -s public",
-    "storybook-build": "storybook build -s public",
-    "storybook-serve": "serve storybook-static"
+    "chromatic": "./Taskfile chromatic --exit-zero-on-changes"
   },
   "pre-commit": [
     "lint",

@@ -8,6 +8,7 @@ node_modules
 # generated files
 .next
 storybook-static
+build-storybook.log
 
 # ts build output
 *.tsbuildinfo
