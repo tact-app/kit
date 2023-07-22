@@ -26,6 +26,8 @@ Requirements:
 ```bash
 $ alias run=./Taskfile
 $ run setup
+$ run wait-for-it -q -w localhost:6006 -- open http://localhost:6006 &
+$ run dev
 ```
 
 ## Manage secrets
@@ -48,6 +50,52 @@ $ run set_vercel_token
 ```bash
 $ run refresh
 ```
+
+### Installation
+
+```bash
+$ run tools npm ci
+```
+
+### Chromatic CLI
+**Useful:** [docs][Chromatic CLI], [src](https://github.com/chromaui/chromatic-cli).
+
+### GitHub CLI
+**Useful:** [docs][GitHub CLI], [src](https://github.com/cli/cli).
+
+### Graphite CLI
+**Useful:** [docs][Graphite CLI], [src](https://github.com/withgraphite/graphite-cli).
+
+```bash
+$ run gt --help
+```
+
+### Sentry CLI
+**Useful:** [docs][Sentry CLI], [src](https://github.com/getsentry/sentry-cli).
+
+```bash
+$ run sentry --help
+```
+
+### Vercel CLI
+**Useful:** [docs][Vercel CLI], [src](https://github.com/vercel/vercel).
+
+```bash
+$ run vercel link
+$ run vercel deploy
+
+$ run vercel help
+```
+
+You can avoid using the token parameter when working with these commands,
+it's substituted automatically under the hood.
+
+[Chromatic CLI]:    https://www.chromatic.com/docs/cli
+[Docker CLI]:       https://docs.docker.com/engine/reference/commandline/cli/
+[GitHub CLI]:       https://cli.github.com/
+[Graphite CLI]:     https://graphite.dev/docs/graphite-cli
+[Sentry CLI]:       https://docs.sentry.io/product/cli/
+[Vercel CLI]:       https://vercel.com/docs/cli
 
 ## License
 
