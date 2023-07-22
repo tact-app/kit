@@ -11,9 +11,10 @@ on:
           - Cache invalidation
           - Cache warmup
           - Clean environment
+          - Delivery to production
+          - Delivery to preview
           - Dependabot at weekends
           - Issue invalidation
-          - UI kit delivery
           - Workflow invalidation
         default: Workflow invalidation
         required: true

@@ -14,5 +14,5 @@ chromatic() {
     "${@}"
   )
 
-  "${_chromatic}" --project-token="$(@token get 'chromatic project')" "${args[@]}"
+  "${_chromatic}" --project-token="$(@token get 'Chromatic project')" "${args[@]}"
 }
