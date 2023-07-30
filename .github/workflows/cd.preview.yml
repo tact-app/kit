@@ -29,6 +29,7 @@ jobs:
   publish:
     name: Publishing
     runs-on: ubuntu-latest
+    if: ! contains(fromJSON('["dependabot[bot]", "renovate[bot]"]'), github.actor)
     environment:
       name: chromatic
       url: ${{ steps.deployment.outputs.storybookUrl }}
