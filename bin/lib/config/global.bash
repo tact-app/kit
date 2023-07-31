@@ -5,8 +5,9 @@
 declare -A config
 config['shift']=0
 config['dryrun']=false
+config['name']=kit
 config['node']=18
-config['port']=6006
+config['port']=3000
 
 @handle() {
   local arg skip=false
@@ -26,8 +27,8 @@ config['port']=6006
       ;;
 
     -p | --port)
-      config['port']="${2}"
       @busy "${2}" && @fatal the port "${2}" is busy
+      config['port']="${2}"
 
       config['shift']=$((config['shift'] + 2))
       shift 2

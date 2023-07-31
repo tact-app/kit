@@ -36,11 +36,9 @@ jobs:
         run: ./Taskfile tools npm ci
 
       - name: Remove deployments without an active alias
-        run: |
-          shopt -s expand_aliases
-          alias run=./Taskfile
-          run @token set vercel ${{ secrets.VERCEL_TOKEN }}
-          run vercel clean
+        run: ./Taskfile @deployments clean
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
   notify:
     name: Notifying

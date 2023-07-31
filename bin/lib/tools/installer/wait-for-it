@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck source=../../utils/env.bash    # @arch @os
+# shellcheck source=../../utils/os.bash     # @arch @os
 # shellcheck source=../../utils/print.bash  # @fatal
 
 @install-wait-for-it() {
@@ -35,7 +35,7 @@
   *) @fatal there is no supported binary ;;
   esac
 
-  local path=${1} src=https://github.com/roerohan/wait-for-it/releases/download
-  curl -sSfL "${src}/v${version}/${file}" -o "${path}/wait-for-it"
+  local path=${1} src=https://github.com/roerohan/wait-for-it
+  curl -sSfL "${src}/releases/download/v${version}/${file}" -o "${path}/wait-for-it"
   chmod +x "${path}/wait-for-it"
 }

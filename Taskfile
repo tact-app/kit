@@ -12,7 +12,7 @@ include=(
   bin/lib/git/*.bash
   bin/lib/docker/*.bash
   bin/lib/tools/*.bash
-  bin/lib/core/*.bash
+  bin/lib/config/*.bash
   bin/lib/app/*.bash
   bin/lib/main.bash
 )

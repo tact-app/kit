@@ -6,8 +6,8 @@
 refresh() {
   @pull
 
-  @deps install
-  @deps tools
+  deps install
+  deps tools
 
   storybook build
 }

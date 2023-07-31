@@ -47,7 +47,8 @@ jobs:
           check-latest: true
       - name: Install dependencies
         run: npm ci
-        env: { FONTAWESOME_TOKEN: '${{ secrets.FONTAWESOME_TOKEN }}' }
+        env:
+          FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
 
       - name: Publish to Chromatic
         id: deployment

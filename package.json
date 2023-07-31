@@ -7,8 +7,9 @@
     "node": "^18.0.0"
   },
   "scripts": {
-    "dev": "storybook dev -p 6006 -s public",
+    "dev": "storybook dev -p 3000 -s public",
     "build": "storybook build -s public",
+    "build-storybook": "npm run build",
     "serve": "serve storybook-static",
     "lint": "next lint",
     "lint:fix": "next lint --dir . -- --fix",

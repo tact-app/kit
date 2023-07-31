@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck source=../../utils/env.bash    # @arch @os
+# shellcheck source=../../utils/os.bash     # @arch @os
 # shellcheck source=../../utils/print.bash  # @fatal
 
 @install-okteto() {
@@ -30,12 +30,12 @@
 
   local file
   case $(@os) in
-  darwin) file=okteto-Darwin-arm64 ;;
-  linux) file=okteto-Linux-arm64 ;;
+  darwin) file="okteto-Darwin-$(@arch)" ;;
+  linux) file="okteto-Linux-$(@arch)" ;;
   *) @fatal there is no supported binary ;;
   esac
 
-  local path=${1} src=https://github.com/okteto/okteto/releases/download
-  curl -sSfL "${src}/${version}/${file}" -o "${path}/okteto"
+  local path=${1} src=https://github.com/okteto/okteto
+  curl -sSfL "${src}/releases/download/${version}/${file}" -o "${path}/okteto"
   chmod +x "${path}/okteto"
 }

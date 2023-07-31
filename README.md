@@ -1,3 +1,5 @@
+![Tact.kit][social.preview]
+
 # 🎁 Tact.kit
 
 Tact UI kit.
@@ -26,8 +28,8 @@ Requirements:
 ```bash
 $ alias run=./Taskfile
 $ run setup
-$ run wait-for-it -q -w localhost:6006 -- open http://localhost:6006 &
-$ run dev
+$ run wait-for-it -q -w localhost:3000 -- open http://localhost:3000/ &
+$ run storybook serve # or `run storybook dev`
 ```
 
 ## Manage secrets
@@ -54,14 +56,23 @@ $ run refresh
 ### Installation
 
 ```bash
-$ run tools npm ci
+$ run tools install
 ```
 
 ### Chromatic CLI
 **Useful:** [docs][Chromatic CLI], [src](https://github.com/chromaui/chromatic-cli).
 
+```bash
+$ run chromatic --exit-zero-on-changes
+```
+
 ### GitHub CLI
 **Useful:** [docs][GitHub CLI], [src](https://github.com/cli/cli).
+
+```bash
+$ run gh help
+$ run @workflows
+```
 
 ### Graphite CLI
 **Useful:** [docs][Graphite CLI], [src](https://github.com/withgraphite/graphite-cli).
@@ -81,10 +92,8 @@ $ run sentry --help
 **Useful:** [docs][Vercel CLI], [src](https://github.com/vercel/vercel).
 
 ```bash
-$ run vercel link
-$ run vercel deploy
-
 $ run vercel help
+$ run vercel clean
 ```
 
 You can avoid using the token parameter when working with these commands,
@@ -110,3 +119,5 @@ See [CLA][] to see the full text.
 [CLA assistant.src]:  https://github.com/cla-assistant/cla-assistant
 
 <p align="right">made with ❤️ for everyone by OctoLab</p>
+
+[social.preview]: https://cdn.octolab.org/tact/interface.png

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# shellcheck source=../../utils/env.bash    # @arch @os
+# shellcheck source=../../utils/os.bash     # @arch @os
 # shellcheck source=../../utils/print.bash  # @fatal
 
 @install-gum() {
-  local force=false version=0.10.0
+  local force=false version=0.11.0
 
   local arg skip=false
   for arg in "${@}"; do
@@ -35,8 +35,8 @@
   *) @fatal there is no supported binary ;;
   esac
 
-  local path=${1} src=https://github.com/charmbracelet/gum/releases/download
-  curl -sSfL "${src}/v${version}/${file}" -o "${path}/${file}"
+  local path=${1} src=https://github.com/charmbracelet/gum
+  curl -sSfL "${src}/releases/download/v${version}/${file}" -o "${path}/${file}"
   tar -xzf "${path}/${file}" -C "${path}" gum
   rm -f "${path}/${file}"
 }
