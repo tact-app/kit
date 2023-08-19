@@ -8,6 +8,7 @@ config['dryrun']=false
 config['name']=kit
 config['node']=18
 config['port']=3000
+config['image']=tact-app/kit:local
 
 @handle() {
   local arg skip=false

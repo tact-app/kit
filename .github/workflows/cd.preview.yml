@@ -1,14 +1,6 @@
 name: Delivery to preview
 
 on:
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: The reason for dispatching it manually.
-        type: string
-        default: manual healthcheck
-        required: true
-
   pull_request:
     branches: [ main ]
     paths:
@@ -24,6 +16,14 @@ on:
 
   schedule:
     - cron: 0 7 1 * * # at 07:00 on day-of-month 1, UTC
+
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: The reason for dispatching it manually.
+        type: string
+        default: manual healthcheck
+        required: true
 
 jobs:
   publish:
@@ -77,6 +77,6 @@ jobs:
         uses: ./.github/actions/notify
         continue-on-error: true
         with:
-          emoji: 🎁
+          emoji: 👀
           channel: ${{ secrets.SLACK_WEBHOOK }}
           success: ${{ ! contains(needs.*.result, 'failure') }}

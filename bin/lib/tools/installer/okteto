@@ -3,7 +3,7 @@
 # shellcheck source=../../utils/print.bash  # @fatal
 
 @install-okteto() {
-  local force=false version=2.18.0
+  local force=false version=2.19.0
 
   local arg skip=false
   for arg in "${@}"; do

@@ -6,7 +6,9 @@
 
 set_vercel_token() {
   @token store Vercel 24
-  vercel link
+  if [ -z "${VERCEL_ORG_ID}" ] || [ -z "${VERCEL_PROJECT_ID}" ]; then
+    vercel link
+  fi
 }
 
 _vercel=$(which vercel || true)

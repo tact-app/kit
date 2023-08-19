@@ -7,6 +7,21 @@ registries:
     token: ${{ secrets.FONTAWESOME_TOKEN }}
 
 updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      time: '05:00'
+      timezone: UTC
+    labels:
+      - 'type: improvement'
+      - 'scope: inventory'
+      - 'scope: deps'
+    commit-message:
+      prefix: 'ci/cd'
+      include: 'scope'
+    open-pull-requests-limit: 30
+
   - package-ecosystem: npm
     registries:
       - fortawesome
@@ -22,21 +37,6 @@ updates:
     commit-message:
       prefix: 'feat'
       prefix-development: 'chore'
-      include: 'scope'
-    open-pull-requests-limit: 30
-
-  - package-ecosystem: github-actions
-    directory: /
-    schedule:
-      interval: weekly
-      time: '05:00'
-      timezone: UTC
-    labels:
-      - 'type: improvement'
-      - 'scope: inventory'
-      - 'scope: deps'
-    commit-message:
-      prefix: 'ci/cd'
       include: 'scope'
     open-pull-requests-limit: 30
 

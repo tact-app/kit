@@ -93,7 +93,7 @@ $ run sentry --help
 
 ```bash
 $ run vercel help
-$ run vercel clean
+$ run @deployments clean
 ```
 
 You can avoid using the token parameter when working with these commands,

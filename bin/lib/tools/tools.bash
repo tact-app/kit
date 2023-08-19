@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# shellcheck source=_.bash            # $_BINPATH
 # shellcheck source=../git/core.bash  # @root
+# shellcheck source=_.bash            # $_BINPATH
 # shellcheck source=../utils/npm.bash # @consistent @lock
 
 # Example: run tools npm ci

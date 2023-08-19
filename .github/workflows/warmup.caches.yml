@@ -1,4 +1,4 @@
-name: Cache warmup
+name: Workflow caches warmup
 
 on:
   workflow_dispatch:
@@ -9,8 +9,9 @@ on:
         default: manual healthcheck
         required: true
 
-  schedule:
-    - cron: 30 6 1 * * # at 06:30 on day-of-month 1, UTC
+  workflow_run:
+    workflows: [ Workflow caches cleanup ]
+    types: [ completed ]
 
 jobs:
   deps:
@@ -30,7 +31,7 @@ jobs:
           check-latest: true
 
       - name: Install dependencies
-        run: npm ci
+        run: ./Taskfile npm ci
         env:
           FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
 
