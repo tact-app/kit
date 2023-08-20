@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^6.4.0",
-    "@storybook/addon-essentials": "^7.2.3",
+    "@storybook/addon-essentials": "^7.3.2",
     "@storybook/addon-interactions": "^7.3.2",
     "@storybook/addon-links": "^7.3.2",
     "@storybook/blocks": "^7.1.0",
