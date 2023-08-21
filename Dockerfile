@@ -13,9 +13,9 @@ RUN npm ci --ignore-scripts --include=dev && npm run build
 
 FROM nginx:mainline-alpine AS prod
 LABEL author="Tact team <team@tact.run>"
-LABEL org.opencontainers.image.source=https://github.com/tact-app/kit
+LABEL org.opencontainers.image.source="https://github.com/tact-app/kit"
 LABEL org.opencontainers.image.description="Tact UI kit."
-LABEL org.opencontainers.image.licenses=AGPL-3.0-only
+LABEL org.opencontainers.image.licenses="AGPL-3.0-later"
 
 ENV NGINX_PORT=3000
 

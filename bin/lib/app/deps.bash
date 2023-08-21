@@ -6,7 +6,7 @@
 
 deps() {
   local cmd=${1:-install}
-  case "${1}" in
+  case "${cmd}" in
   check) [ "$(depcheck)" == 'No depcheck issue' ] ;;
   install) if ! @consistent; then install && @lock; fi ;;
   tools) tools install ;;

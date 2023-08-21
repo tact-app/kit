@@ -118,6 +118,6 @@ See [CLA][] to see the full text.
 [CLA assistant]:      https://cla-assistant.io/tact-app/kit
 [CLA assistant.src]:  https://github.com/cla-assistant/cla-assistant
 
-<p align="right">made with ❤️ for everyone by OctoLab</p>
+<p align="right">made with ❤️ for everyone by <a href="https://www.octolab.org/">OctoLab</a></p>
 
 [social.preview]: https://cdn.octolab.org/tact/interface.png
