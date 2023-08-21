@@ -27,7 +27,7 @@ updates:
       - fortawesome
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
       time: '05:00'
       timezone: UTC
     labels:
@@ -43,7 +43,7 @@ updates:
   - package-ecosystem: npm
     directory: /tools/
     schedule:
-      interval: weekly
+      interval: daily
       time: '05:00'
       timezone: UTC
     labels:
