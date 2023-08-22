@@ -13,9 +13,9 @@ on:
           - All
           - Delivery to production
           - Delivery to preview
+          - Preview environment cleanup
           - Publish Docker image
           - Stale issues cleanup
-          - Vercel environment cleanup
           - Workflow caches cleanup
           - Workflow caches warmup
           - Workflow runs cleanup

@@ -24,6 +24,19 @@ vercel() {
   "${_vercel}" -t "${token}" "${args[@]}"
 }
 
+@deploy() {
+   if [ "${1:-}" == 'prod' ]; then
+     vercel pull --yes --environment=production >&2
+     vercel build --yes --prod >&2
+     vercel deploy --yes --prebuilt --prod
+     return
+   fi
+
+   vercel pull --yes --environment=preview >&2
+   vercel build --yes >&2
+   vercel deploy --yes --prebuilt
+ }
+
 @deployments() {
   local action=${1:-$(gum choose clean drop)} depth=${2:-1} guard=7
 

@@ -26,8 +26,8 @@ on:
         required: true
 
 jobs:
-  publish:
-    name: Publishing
+  deploy:
+    name: Deploying
     runs-on: ubuntu-latest
     if: ! contains(fromJSON('["dependabot[bot]", "renovate[bot]"]'), github.actor)
     environment:
@@ -46,11 +46,11 @@ jobs:
           cache-dependency-path: package-lock.json
           check-latest: true
       - name: Install dependencies
-        run: npm ci
+        run: ./Taskfile npm ci
         env:
           FONTAWESOME_TOKEN: ${{ secrets.FONTAWESOME_TOKEN }}
 
-      - name: Publish to Chromatic
+      - name: Build and deploy to Chromatic
         id: deployment
         uses: chromaui/action@v1
         with:
@@ -64,7 +64,7 @@ jobs:
 
   notify:
     name: Notifying
-    needs: [ publish ]
+    needs: [ deploy ]
     runs-on: ubuntu-latest
     if: failure() || success()
 
