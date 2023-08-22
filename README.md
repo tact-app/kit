@@ -4,7 +4,7 @@
 
 Tact UI kit.
 
-## Quick Start
+## Quick start
 
 Requirements:
 

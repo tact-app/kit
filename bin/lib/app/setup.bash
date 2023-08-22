@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # shellcheck source=refresh.bash            # refresh
 # shellcheck source=../tools/chromatic.bash # set_chromatic_token
 # shellcheck source=../tools/github.bash    # set_github_token

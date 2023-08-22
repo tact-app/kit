@@ -53,8 +53,8 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Build static HTML with Storybook
-        run: npm run build
-      - name: Upload the documentation
+        run: ./Taskfile npm run build
+      - name: Upload the UI kit
         uses: actions/upload-pages-artifact@v2
         with: { path: storybook-static }
 
