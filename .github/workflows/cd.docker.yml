@@ -45,7 +45,7 @@ jobs:
 
       - name: Define metadata for images
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |
             ghcr.io/tact-app/kit
