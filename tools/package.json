@@ -3,7 +3,7 @@
   "dependencies": {
     "@sentry/cli": "^2.20.5",
     "@withgraphite/graphite-cli": "^0.22.3",
-    "chromatic": "^6.23.0",
+    "chromatic": "^9.1.0",
     "depcheck": "^1.4.5",
     "vercel": "^32.0.0"
   }
